@@ -13,7 +13,7 @@ info:
 schemes:
   - http
 
-license: Apache 2.0
+# license: Apache 2.0
 
 # host: <to be inserted here>
 
@@ -72,7 +72,7 @@ paths:
         default:
           description: Unsuccessful response
         
-     post:
+    post:
       # adding content type?
       parameters:
         - name: containerID
@@ -120,7 +120,6 @@ paths:
               description: HTTP methods allowed
               type: array
               items:
-                name: Method
                 type: string
 
         "409":
@@ -170,7 +169,6 @@ paths:
               description: HTTP methods allowed
               type: array
               items:
-                name: Method
                 type: string
 
         "409":
@@ -210,18 +208,14 @@ paths:
               description: HTTP methods allowed
               type: array
               items:
-                name: Method
                 type: string
 
         "406":
           description: Violates constraints on resource modification
           headers:
             Accept-Patch:
-                description: Content that can be modified using the PATCH request
                 type: array
                 items:
-                  name: Content
-                  description: Content that can be modified using PATCH
                   type: string
 
         default:
@@ -252,7 +246,6 @@ paths:
               description: HTTP methods allowed
               type: array
               items:
-                name: Method
                 type: string
 
         default:
@@ -268,25 +261,19 @@ paths:
           type: integer
           format: int64
 
-      response:
+      responses:
 
         "200":
           description: Successful response
           headers:
             Accept:
-              description: Lists HTTP methods that can be used on this resource
               type: array
               items:
-                name: Method
-                description: Allowed HTTP method
                 type: string
 
             Accept-Patch:
-              description: Content that can be modified using the PATCH request
               type: array
               items:
-                name: Content
-                description: Content that can be modified using PATCH
                 type: string
 
         "404":
@@ -314,7 +301,6 @@ paths:
             Allow:
               type: array
               items:
-               name: Method
                 type: string
 
         "404":
@@ -349,7 +335,6 @@ paths:
             Allow:
               type: array
               items:
-               name: Method
                 type: string
             ETag:
               description: ETag for this resource
@@ -409,7 +394,6 @@ paths:
               description: HTTP methods allowed
               type: array
               items:
-                name: Method
                 type: string
         default:
           description: Unsuccessful response
@@ -460,7 +444,6 @@ paths:
               description: HTTP methods allowed
               type: array
               items:
-                name: Method
                 type: string
 
         "409":
@@ -505,18 +488,14 @@ paths:
               description: HTTP methods allowed
               type: array
               items:
-                name: Method
                 type: string
 
         "406":
           description: Violates constraints on resource modification
           headers:
             Accept-Patch:
-                description: Content that can be modified using the PATCH request
                 type: array
                 items:
-                  name: Content
-                  description: Content that can be modified using PATCH
                   type: string
 
         default:
@@ -553,7 +532,6 @@ paths:
               description: HTTP methods allowed
               type: array
               items:
-                name: Method
                 type: string
 
         default:
@@ -581,18 +559,13 @@ paths:
           description: Successful response
           headers:
             Accept:
-              description: Lists HTTP methods that can be used on this resource
+              type: array
               items:
-                name: Method
-                description: Allowed HTTP method
                 type: string
 
             Accept-Patch:
-              description: Content that can be modified using the PATCH request
               type: array
               items:
-                name: Content
-                description: Content that can be modified using PATCH
                 type: string
 
         "404":
@@ -617,15 +590,14 @@ paths:
           type: integer
           format: int64
 
-      resources:
+      responses:
 
         "200":
           description: Successful response
           headers:
-            Allow:
+            allow:
               type: array
               items:
-               name: Method
                 type: string
 
         "404":
