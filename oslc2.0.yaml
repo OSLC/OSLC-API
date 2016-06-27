@@ -228,6 +228,10 @@ paths:
         "200":
           description: Successful response
 
+          headers:
+            vary:
+              type: string # URI directed to cache
+
         "406":
           description: Compact representation not supported
 
@@ -235,7 +239,7 @@ paths:
           description: Does not exist
           
   # Path to the Query within the Service
-  /{serviceID}/query/{sqlQuery}:
+  /{serviceID}/query?{sqlQuery}:
 
     # GET the Query by putting the query in the URI
     get:
@@ -308,6 +312,45 @@ paths:
 
         default:
           description: Unsuccessful response
+
+  /{serviceID}/{resourceID}?{paging}:
+
+    get:
+
+      description: |
+        Obtain a specific resource by resourceID
+
+      parameters:
+        - name: serviceID
+          in: path
+          description: ID of service
+          required: true
+          type: integer
+          format: int64
+        - name: resourceID
+          in: path
+          description: ID of service
+          required: true
+          type: integer
+          format: int64
+        - name: paging
+          in: path
+          description: Query to enable paging with oslc:paging=true or oslc.pageSize=<integer>
+          required: true
+          type: string
+
+      responses:
+        "200":
+          description: Successful response
+          schema:
+            $ref: '#/definitions/Resource'
+        
+        "404":
+          description: Unable to find resource
+
+        default:
+          description: Unsuccessful response
+
 
   /{serviceID}/{resourceID}:
 
@@ -383,6 +426,41 @@ paths:
 
         default:
           description: Unsuccessful response
+
+    head:
+      description: |
+        Get the size of the resource
+
+      parameters:
+        - name: serviceID
+          in: path
+          description: ID of service
+          required: true
+          type: integer
+          format: int64
+        - name: resourceID
+          in: path
+          description: ID of service
+          required: true
+          type: integer
+          format: int64
+
+      responses:
+
+        "200":
+          description: Successful response
+
+          headers:
+            Content-Length:
+              type: integer
+              format: int64
+
+        "404":
+          description: Unable to find resource
+
+        default:
+          description: Unsuccessful response
+
 
     get:
       description: |
@@ -502,6 +580,8 @@ definitions:
       name:
         type: string
       URI:
+        type: string
+      oslc:nextPage: # URL to next page of Resource is paging is enabled
         type: string
 
   # Defines an array of Resources
