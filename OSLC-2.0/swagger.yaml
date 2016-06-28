@@ -13,7 +13,7 @@ schemes:
 
 license: Apache 2.0
   
-host: "oslc-server.mybluemix.net" # Host can be changed
+host: "oslc.mybluemix.net" # Host can be changed
 
 # Primarily accepts packets in rdf+xml format, json if rdf+xml not available
 consumes:
@@ -26,12 +26,12 @@ produces:
   - "application/json"
 
 # All services should have a "/services" when accessing services
-basePath: /services
+basePath: /OSLC-2.0
 
 paths:
 
   # Path to the Service Provider Catalog
-  /catalog:
+  /services/catalog:
 
     # GET operation to retrieve the SPC
     get:
@@ -55,7 +55,7 @@ paths:
           description: Unsuccessful response
  
   # Path to a Service Provider, as specified in "serviceProviderID"
-  /serviceProviders/{serviceProviderID}:
+  /services/serviceProviders/{serviceProviderID}:
   
     # GET the Service Provider
     get:
@@ -83,7 +83,7 @@ paths:
           description: Unsuccessful response
 
   # Path to a Service, as specified in "serviceID"
-  /{serviceID}:
+  /services/{serviceID}:
 
     # GET the Service
     get:
@@ -114,7 +114,7 @@ paths:
           description: Unsuccessful response
 
   # Path to the Creation Delegated Dialog within the Service
-  /{serviceID}/dialog/create:
+  /services/{serviceID}/dialog/create:
     
     # GET the Creation Delegated Dialog
     get:
@@ -138,7 +138,7 @@ paths:
           description: Unsuccessful response
 
   # Path to the Selection Delegated Dialog within the Service
-  /{serviceID}/dialog/select:
+  /services/{serviceID}/dialog/select:
 
     # GET the Selection Delegated Dialog
     get:
@@ -162,7 +162,7 @@ paths:
           description: Unsuccessful response
 
   # Path to the Factory within the Service
-  /{serviceID}/factory:
+  /services/{serviceID}/factory:
 
     # POST the OSLC Resource to be created
     post:
@@ -195,7 +195,7 @@ paths:
 
   # Path to the UI Preview within the Service
   # This may not exist for some services
-  /{serviceID}/preview:
+  /services/{serviceID}/preview:
 
     # GET the UI Preview
     get:
@@ -239,7 +239,7 @@ paths:
           description: Does not exist
           
   # Path to the Query within the Service
-  /{serviceID}/query?{sqlQuery}:
+  /services/{serviceID}/query?{sqlQuery}:
 
     # GET the Query by putting the query in the URI
     get:
@@ -276,7 +276,7 @@ paths:
         default:
           description: Unsuccessful response
 
-  /{serviceID}/query:
+  /services/{serviceID}/query:
     # POST to Query by putting the query in the body of the request
     post:
       description: |
@@ -313,7 +313,7 @@ paths:
         default:
           description: Unsuccessful response
 
-  /{serviceID}/{resourceID}?{paging}:
+  /services/{serviceID}/{resourceID}?{paging}:
 
     get:
 
@@ -352,7 +352,7 @@ paths:
           description: Unsuccessful response
 
 
-  /{serviceID}/{resourceID}:
+  /services/{serviceID}/{resourceID}:
 
     put:
       description: |

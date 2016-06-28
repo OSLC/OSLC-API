@@ -11,7 +11,7 @@ schemes:
 
 license: Apache 2.0
   
-host: "oslc-server.mybluemix.net" # Host can be changed
+host: "oslc.mybluemix.net" # Host can be changed
 
 # Primarily accepts packets in rdf+xml format, json if rdf+xml not available
 consumes:
@@ -22,6 +22,8 @@ consumes:
 produces:
   - "application/rdf+xml"
   - "application/json"
+
+basePath: /OSLC-3.0
 
 paths:
 

@@ -13,6 +13,10 @@ info:
 schemes:
   - http
 
+license: Apache 2.0
+
+host: "oslc.mybluemix.net"
+
 # license: Apache 2.0
 
 # host: <to be inserted here>
@@ -25,12 +29,12 @@ produces:
   - application/rdf+xml
   - application/json+ld
 
-basePath: /containers
+basePath: /LDP
 
 # Describe your paths here
 paths:
   # This is a path endpoint. Change it.
-  /{containerID}:
+  /containers/{containerID}:
     # This is a HTTP operation
     get:
       # Describe this verb here. Note: you can use markdown
@@ -309,7 +313,7 @@ paths:
         default:
           description: Unsuccessful response
 
-  /{containerID}/{resourceID}:
+  /containers/{containerID}/{resourceID}:
 
     get:
 
