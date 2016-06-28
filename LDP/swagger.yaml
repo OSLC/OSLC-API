@@ -8,28 +8,26 @@ swagger: '2.0'
 # This is your document metadata
 info:
   version: "1.0.0"
-  title: LDP API
+  title: "LDP API"
+  contact:
+    name: "IBM OSLC Team"
+  license:
+    name: "Apache 2.0"
 
 schemes:
-  - http
-
-license: Apache 2.0
+  - "http"
 
 host: "oslc.mybluemix.net"
 
-# license: Apache 2.0
-
-# host: <to be inserted here>
-
 consumes:
-  - application/rdf+xml
-  - application/json+ld
+  - "application/rdf+xml"
+  - "application/json+ld"
 
 produces:
-  - application/rdf+xml
-  - application/json+ld
+  - "application/rdf+xml"
+  - "application/json+ld"
 
-basePath: /LDP
+basePath: "/LDP"
 
 # Describe your paths here
 paths:

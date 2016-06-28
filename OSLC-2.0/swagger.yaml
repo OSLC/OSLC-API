@@ -6,12 +6,14 @@ swagger: '2.0'
 
 info:
   version: "2.0.0"
-  title: OSLC API
+  title: "OSLC 2.0 API"
+  contact:
+    name: "IBM OSLC Team"
+  license: 
+    name: "Apache 2.0"
   
 schemes: 
-  - http
-
-license: Apache 2.0
+  - "http"
   
 host: "oslc.mybluemix.net" # Host can be changed
 
@@ -26,7 +28,7 @@ produces:
   - "application/json"
 
 # All services should have a "/services" when accessing services
-basePath: /OSLC-2.0
+basePath: "/OSLC-2.0"
 
 paths:
 
