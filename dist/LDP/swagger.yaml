@@ -1,21 +1,25 @@
 # YAML file for LDP 1.0
 
-# Example YAML to get you started quickly.
-# Be aware that YAML has indentation based scoping.
-# Code completion support is available so start typing for available options.
+x-ibm-configuration:
+  enforced: false
+  phase: identified
+  testable: true
+  cors:
+    enabled: true
+
 swagger: '2.0'
 
 # This is your document metadata
 info:
   version: "1.0.0"
-  title: "LDP API"
+  title: "LDP-API"
   contact:
     name: "IBM OSLC Team"
   license:
     name: "Apache 2.0"
 
 schemes:
-  - "http"
+  - "https"
 
 host: "oslc.mybluemix.net"
 

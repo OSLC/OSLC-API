@@ -1,17 +1,24 @@
 # YAML file for OSLC 3.0
 
+x-ibm-configuration:
+  enforced: false
+  phase: identified
+  testable: true
+  cors:
+    enabled: true
+
 swagger: '2.0'
 
 info:
-  version: "2.0.0"
-  title: "OSLC 3.0 API"
+  version: "3.0.0"
+  title: "OSLC-3-API"
   contact:
     name: "IBM OSLC Team"
   license:
     name: "Apache 2.0"
   
 schemes: 
-  - "http"
+  - "https"
   
 host: "oslc.mybluemix.net" # Host can be changed
 
