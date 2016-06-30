@@ -22,13 +22,19 @@ info:
 tags:
   - name: OSLC-2.0
     description: "API's for OSLC-2.0"
-    #externalDocs: 
+    externalDocs: 
+      description: "Specification for OSLC-2.0"
+      url: "http://open-services.net/bin/view/Main/OslcCoreSpecification"
   - name: LDP
     description: "API's for LDP"
-    #externalDocs:
+    externalDocs:
+      description: "Specification for LDP-1.0"
+      url: "https://www.w3.org/TR/ldp/"
   - name: OSLC-3.0
     description: "API's for OSLC-3.0"
-    #externalDocs: 
+    externalDocs:
+      description: "Specification for OSLC-3.0"
+      url: "http://open-services.net/wiki/core/Specification-3.0/"
 
 schemes:
   - "http"
