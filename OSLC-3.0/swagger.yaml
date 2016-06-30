@@ -1,5 +1,13 @@
 # YAML file for OSLC 3.0
 
+#x-ibm-configuration:
+#  enforced: false
+#  phase: identified
+#  testable: true
+#  cors:
+#    enabled: true
+
+
 swagger: '2.0'
 
 info:
@@ -13,7 +21,7 @@ info:
 schemes: 
   - "http"
   
-host: "oslc.mybluemix.net" # Host can be changed
+host: "oslc-ui.mybluemix.net" # Host can be changed
 
 # Primarily accepts packets in rdf+xml format, json if rdf+xml not available
 consumes:

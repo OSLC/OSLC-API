@@ -2,6 +2,13 @@
 # The code is based off of the OSLC 2.0 specification located
 # At http://open-services.net/bin/view/Main/OslcCoreSpecification
 
+#x-ibm-configuration:
+#  enforced: false
+#  phase: identified
+#  testable: true
+#  cors:
+#    enabled: true
+
 swagger: '2.0'
 
 info:
@@ -13,9 +20,9 @@ info:
     name: "Apache 2.0"
   
 schemes: 
-  - "https"
+  - "http"
   
-host: "oslc.mybluemix.net" # Host can be changed
+host: "oslc-ui.mybluemix.net" # Host can be changed
 
 # Primarily accepts packets in rdf+xml format, json if rdf+xml not available
 consumes:

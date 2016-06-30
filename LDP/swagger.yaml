@@ -1,27 +1,27 @@
 # YAML file for LDP 1.0
 
-x-ibm-configuration:
-  enforced: false
-  phase: identified
-  testable: true
-  cors:
-    enabled: true
+#x-ibm-configuration:
+#  enforced: false
+#  phase: identified
+#  testable: true
+#  cors:
+#    enabled: true
 
 swagger: '2.0'
 
 # This is your document metadata
 info:
   version: "1.0.0"
-  title: "LDP-API"
+  title: "OSLC-APi's"
   contact:
     name: "IBM OSLC Team"
   license:
     name: "Apache 2.0"
 
 schemes:
-  - "https"
+  - "http"
 
-host: "oslc.mybluemix.net"
+host: "oslc-ui.mybluemix.net"
 
 consumes:
   - "application/rdf+xml"
@@ -41,9 +41,7 @@ paths:
     get:
       # Describe this verb here. Note: you can use markdown
       description: |
-        Gets `Person` objects.
-        Optional query param of **size** determines
-        size of returned array
+        Gets the container by its ID
       # This is array of GET operation parameters:
       parameters:
         # An example parameter that is in query and is required
