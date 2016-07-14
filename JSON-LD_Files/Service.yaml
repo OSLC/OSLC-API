@@ -1,0 +1,122 @@
+
+
+{
+  "@graph" : [ {
+    "@id" : "https://tools.oasis-open.org/version-control/svn/oslc-core/trunk/specs/shapes/Service-shape.ttl#Service",
+    "@type" : "oslc:ResourceShape",
+    "describes" : "oslc:Service",
+    "property" : [ "https://tools.oasis-open.org/version-control/svn/oslc-core/trunk/specs/shapes/Service-shape.ttl#oslc-service-domain", "https://tools.oasis-open.org/version-control/svn/oslc-core/trunk/specs/shapes/Service-shape.ttl#oslc-selectionDialog", "https://tools.oasis-open.org/version-control/svn/oslc-core/trunk/specs/shapes/Service-shape.ttl#oslc-queryCapability", "https://tools.oasis-open.org/version-control/svn/oslc-core/trunk/specs/shapes/Service-shape.ttl#oslc-creationDialog", "https://tools.oasis-open.org/version-control/svn/oslc-core/trunk/specs/shapes/Service-shape.ttl#oslc-usage", "https://tools.oasis-open.org/version-control/svn/oslc-core/trunk/specs/shapes/Service-shape.ttl#oslc-creationFactory" ],
+    "dcterms:description" : "An LDPC whose properties describe specific services offered by a server, \r\n        and the URIs to use for those services in the context of that ServiceProvider.",
+    "title" : "Service"
+  }, {
+    "@id" : "https://tools.oasis-open.org/version-control/svn/oslc-core/trunk/specs/shapes/Service-shape.ttl#oslc-creationDialog",
+    "@type" : "oslc:Property",
+    "name" : "creationDialog",
+    "occurs" : "oslc:Zero-or-many",
+    "propertyDefinition" : "oslc:creationDialog",
+    "range" : "oslc:Dialog",
+    "oslc:readOnly" : true,
+    "representation" : "oslc:Inline",
+    "valueType" : "oslc:AnyResource",
+    "description" : "Enables clients to create a resource via UI."
+  }, {
+    "@id" : "https://tools.oasis-open.org/version-control/svn/oslc-core/trunk/specs/shapes/Service-shape.ttl#oslc-creationFactory",
+    "@type" : "oslc:Property",
+    "name" : "creationFactory",
+    "occurs" : "oslc:Zero-or-many",
+    "propertyDefinition" : "oslc:creationFactory",
+    "range" : "oslc:CreationFactory",
+    "oslc:readOnly" : true,
+    "representation" : "oslc:Inline",
+    "valueType" : "oslc:AnyResource",
+    "description" : "An LDPC that enables clients to create new resources."
+  }, {
+    "@id" : "https://tools.oasis-open.org/version-control/svn/oslc-core/trunk/specs/shapes/Service-shape.ttl#oslc-queryCapability",
+    "@type" : "oslc:Property",
+    "name" : "queryCapability",
+    "occurs" : "oslc:Zero-or-many",
+    "propertyDefinition" : "oslc:queryCapability",
+    "range" : "oslc:QueryCapability",
+    "oslc:readOnly" : true,
+    "representation" : "oslc:Inline",
+    "valueType" : "oslc:AnyResource",
+    "description" : "Enables clients query across a collection of resources."
+  }, {
+    "@id" : "https://tools.oasis-open.org/version-control/svn/oslc-core/trunk/specs/shapes/Service-shape.ttl#oslc-selectionDialog",
+    "@type" : "oslc:Property",
+    "name" : "selectionDialog",
+    "occurs" : "oslc:Zero-or-many",
+    "propertyDefinition" : "oslc:selectionDialog",
+    "range" : "oslc:Dialog",
+    "oslc:readOnly" : true,
+    "representation" : "oslc:Inline",
+    "valueType" : "oslc:AnyResource",
+    "description" : "Enables clients to select a resource via UI."
+  }, {
+    "@id" : "https://tools.oasis-open.org/version-control/svn/oslc-core/trunk/specs/shapes/Service-shape.ttl#oslc-service-domain",
+    "@type" : "oslc:Property",
+    "name" : "domain",
+    "occurs" : "oslc:Exactly-one",
+    "propertyDefinition" : "oslc:domain",
+    "oslc:readOnly" : true,
+    "representation" : "oslc:Reference",
+    "valueType" : "oslc:Resource",
+    "description" : "Namespace URI of the specification that is implemented by this service. In most cases this namespace URI will be for an OSLC domain, but other URIs MAY be used."
+  }, {
+    "@id" : "https://tools.oasis-open.org/version-control/svn/oslc-core/trunk/specs/shapes/Service-shape.ttl#oslc-usage",
+    "@type" : "oslc:Property",
+    "name" : "usage",
+    "occurs" : "oslc:Zero-or-many",
+    "propertyDefinition" : "oslc:usage",
+    "oslc:readOnly" : true,
+    "representation" : "oslc:Reference",
+    "valueType" : "oslc:Resource",
+    "description" : "An identifier URI for the domain specified usage of \r\n\t\tthis resource. If a resource has multiple uses, it may designate the primary or default one that should be used with a property value of oslc:default."
+  } ],
+  "@id" : "urn:x-arq:DefaultGraphNode",
+  "@context" : {
+    "readOnly" : {
+      "@id" : "http://open-services.net/ns/core#readOnly",
+      "@type" : "http://www.w3.org/2001/XMLSchema#boolean"
+    },
+    "representation" : {
+      "@id" : "http://open-services.net/ns/core#representation",
+      "@type" : "@id"
+    },
+    "valueType" : {
+      "@id" : "http://open-services.net/ns/core#valueType",
+      "@type" : "@id"
+    },
+    "description" : {
+      "@id" : "http://purl.org/dc/terms/description",
+      "@type" : "http://www.w3.org/1999/02/22-rdf-syntax-ns#XMLLiteral"
+    },
+    "occurs" : {
+      "@id" : "http://open-services.net/ns/core#occurs",
+      "@type" : "@id"
+    },
+    "propertyDefinition" : {
+      "@id" : "http://open-services.net/ns/core#propertyDefinition",
+      "@type" : "@id"
+    },
+    "name" : "http://open-services.net/ns/core#name",
+    "range" : {
+      "@id" : "http://open-services.net/ns/core#range",
+      "@type" : "@id"
+    },
+    "title" : "http://purl.org/dc/terms/title",
+    "property" : {
+      "@id" : "http://open-services.net/ns/core#property",
+      "@type" : "@id"
+    },
+    "describes" : {
+      "@id" : "http://open-services.net/ns/core#describes",
+      "@type" : "@id"
+    },
+    "owl" : "http://www.w3.org/2002/07/owl#",
+    "rdf" : "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "dcterms" : "http://purl.org/dc/terms/",
+    "rdfs" : "http://www.w3.org/2000/01/rdf-schema#",
+    "oslc" : "http://open-services.net/ns/core#"
+  }
+}
