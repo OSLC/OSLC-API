@@ -10,6 +10,7 @@
 swagger: '2.0'
 
 # This is your document metadata
+
 info:
   version: "1.0.0"
   title: "OSLC-API's"
@@ -42,11 +43,9 @@ schemes:
 host: "oslc-ui.mybluemix.net"
 
 consumes:
-  - "application/rdf+xml"
   - "application/json+ld"
 
 produces:
-  - "application/rdf+xml"
   - "application/json+ld"
 
 #basePath: "/"
@@ -527,8 +526,6 @@ paths:
 
         "409":
           description: Property cannot be modified
-          schema:
-            type: string
 
         "412":
           description: ETags don't match
@@ -789,7 +786,10 @@ paths:
           
           # Schema that describes response, as defined in "ref"
           schema:
-            $ref: '#/definitions/ServiceProviders'
+            $ref: "#/definitions/ServiceProviderCatalog"
+            externalDocs:
+              description: Description of Service Provider Catalog that is returned
+              url: http://open-services.net/ns/core#ServiceProviderCatalog
 
         "404":
           description: Unable to find catalog
@@ -823,9 +823,8 @@ paths:
         "200":
           description: Successful response
 
-          # Schema that describes response, as defined in "ref"
           schema:
-            $ref: '#/definitions/ServiceProvider'
+            $ref: "#/definitions/ServiceProvider"
 
         default:
           description: Unsuccessful response
@@ -858,10 +857,127 @@ paths:
 
           # Schema that describes response, as defined in "ref"
           schema:
-            $ref: '#/definitions/Service'
+            $ref: "#/definitions/Service"
+            externalDocs:
+              description: The requested service
+              url: http://open-services.net/ns/core#Service
 
         "404":
           description: Unable to find resource
+
+        default:
+          description: Unsuccessful response
+  
+  /services/{serviceID}/oauth:
+
+    # GET the Service
+    get:
+
+      tags:
+        - OSLC-3.0
+        - OSLC-2.0
+
+      description: |
+        Lists options provided within service
+
+      parameters:
+        - name: serviceID
+          in: path
+          description: ID of service
+          required: true
+          type: integer
+          format: int64
+
+      responses:
+
+        "200":
+          description: Successful
+
+          # Schema that describes response, as defined in "ref"
+          #schema:
+          #  type: string
+          #  externalDocs:
+          #    description: The OAuth Configuration for this service
+          #    url: http://open-services.net/ns/core#OAuthConfiguration
+
+        "404":
+          description: Unable to find the OAuth Configuration
+
+        default:
+          description: Unsuccessful response
+
+  /services/{serviceID}/prefix:
+
+    # GET the Service
+    get:
+
+      tags:
+        - OSLC-3.0
+        - OSLC-2.0
+
+      description: |
+        Lists options provided within service
+
+      parameters:
+        - name: serviceID
+          in: path
+          description: ID of service
+          required: true
+          type: integer
+          format: int64
+
+      responses:
+
+        "200":
+          description: Successful
+
+          # Schema that describes response, as defined in "ref"
+          #schema:
+          #  type: string
+          #  externalDocs:
+          #    description: The prefix definition for this service
+          #    url: http://open-services.net/ns/core#PrefixDefinition
+
+        "404":
+          description: Unable to find resource
+
+        default:
+          description: Unsuccessful response
+
+  /services/{serviceID}/publisher:
+
+    # GET the Service
+    get:
+
+      tags:
+        - OSLC-3.0
+        - OSLC-2.0
+
+      description: |
+        Lists options provided within service
+
+      parameters:
+        - name: serviceID
+          in: path
+          description: ID of service
+          required: true
+          type: integer
+          format: int64
+
+      responses:
+
+        "200":
+          description: Successful
+
+          # Schema that describes response, as defined in "ref"
+          #schema:
+          #  type: string
+          #  externalDocs:
+          #    description: The requested service
+          #    url: http://open-services.net/ns/core#Publisher
+
+        "404":
+          description: Unable to find publisher
 
         default:
           description: Unsuccessful response
@@ -891,14 +1007,23 @@ paths:
 
         "200":
           description: Successful response
+          
+          #schema:
+          #  type: string
+          #  externalDocs:
+          #    description: The creation dialog for this service
+          #    url: http://open-services.net/ns/core#Dialog
+
+        "400":
+          description: Dialog unavailable
 
         default:
           description: Unsuccessful response
 
-  # Path to the Selection Delegated Dialog within the Service
+  # Path to the Creation Delegated Dialog within the Service
   /services/{serviceID}/dialog/select:
-
-    # GET the Selection Delegated Dialog
+    
+    # GET the Creation Delegated Dialog
     get:
 
       tags:
@@ -906,7 +1031,7 @@ paths:
         - OSLC-2.0
 
       description: |
-        Gets a resource selection dialog.
+        Gets a resource creation dialog.
 
       parameters:
         - name: serviceID
@@ -915,14 +1040,24 @@ paths:
           required: true
           type: integer
           format: int64
-
+        
       responses:
 
         "200":
           description: Successful response
 
+          #schema:
+          #  type: string
+          #  externalDocs:
+          #    description: The selection dialog for this service
+          #    url: http://open-services.net/ns/core#Dialog
+
+        "400":
+          description: Dialog unavailable
+
         default:
           description: Unsuccessful response
+
 
   # Path to the Factory within the Service
   /services/{serviceID}/factory:
@@ -957,6 +1092,12 @@ paths:
 
         "200":
           description: Successful creation
+
+          #schema:
+          #  type: string
+          #  externalDocs:
+          #    description: Creation dialog for this service
+          #    url: http://open-services.net/ns/core#CreationFactory
 
         default:
           description: Unsuccessful response
@@ -1014,7 +1155,7 @@ paths:
           description: Does not exist
           
   # Path to the Query within the Service
-  /services/{serviceID}/query?{sqlQuery}:
+  /services/{serviceID}/query?{oslcQuery}:
 
     # GET the Query by putting the query in the URI
     get:
@@ -1034,7 +1175,7 @@ paths:
           required: true
           type: integer
           format: int64
-        - name: sqlQuery
+        - name: oslcQuery
           in: path
           description: User's query of resources
           required: true
@@ -1047,8 +1188,11 @@ paths:
           description: Successful response
 
           # Schema for the resources that come back, as defined under "Resources"
-          schema:
-            $ref: '#/definitions/Resources'
+          #schema:
+          #  type: string
+          #  externalDocs:
+          #    description: The query results
+           #   url: http://open-services.net/ns/core#QueryCapability
 
         "400":
           description: Error in specification of query
@@ -1056,412 +1200,51 @@ paths:
         default:
           description: Unsuccessful response
 
-  /services/{serviceID}/query:
-    # POST to Query by putting the query in the body of the request
-    post:
+
+  /services//{resourceID}?{paging}:
+
+    get:
 
       tags:
         - OSLC-3.0
         - OSLC-2.0
 
       description: |
-        Enables a query for resources within this serice via POST.
+        Obtain a specific resource by resourceID
 
-      # Inputs the query into the body
       parameters:
-        - name: serviceID
+        - name: resourceID
           in: path
           description: ID of service
           required: true
           type: integer
           format: int64
-        - name: sqlQuery
-          in: body
-          description: User's query of resources
+        - name: paging
+          in: path
+          description: Query to enable paging with oslc:paging=true or oslc.pageSize=<integer>
           required: true
-          schema:
-            type: string
-            format: string
+          type: string
 
       responses:
-
         "200":
           description: Successful response
-
-          # Schema for the resources that come back, as defined under "Resources"
           schema:
-            $ref: '#/definitions/Resources'
-
-        "400":
-          description: Error in specification of query
+            $ref: "#/definitions/Resource"
+            externalDocs:
+              description: Resource returned via paging
+              url: http://open-services.net/ns/core#ResponseInfo
+        "404":
+          description: Unable to find resource
 
         default:
           description: Unsuccessful response
 
-  /services/{serviceID}/{containerID}:
+  /services/{serviceID}/{resourceID}?{paging}:
 
     get:
-
+      
       tags:
-        - OSLC-3.0
-
-      # Describe this verb here. Note: you can use markdown
-      description: |
-        Gets the container within a service
-      # This is array of GET operation parameters:
-      parameters:
-        # An example parameter that is in query and is required
-        - name: serviceID
-          in: path
-          description: ID of service
-          required: true
-          type: integer
-          format: int64
-        - name: containerID
-          in: path
-          description: LDP Container to get
-          required: true
-          type: integer
-          format: int64
-
-      # Expected responses for this operation:
-      responses:
-        # Response code
-        "200":
-          description: Successful response
-          # A schema describing your response object.
-          # Use JSON Schema format
-          headers:
-            type:
-              description: Target URI matching type of container
-              type: string
-            Content-Type:
-              description: Content-Type for resource
-              type: string
-
-          schema:
-            $ref: '#/definitions/LDPContainer'
-        
-        "404":
-          description: Unable to find container
-
-        default:
-          description: Unsuccessful response
-        
-    post:
-
-      tags:
-        - OSLC-3.0
-
-      description: |
-        Creates a container for this service
-
-      parameters:
-        - name: serviceID
-          in: path
-          description: ID of service
-          required: true
-          type: integer
-          format: int64
-        - name: containerID
-          in: path
-          description: LDP Container to get
-          required: true
-          type: integer
-          format: int64
-        - name: resource
-          in: body
-          description: Resource to insert into container
-          required: true
-          schema:
-            $ref: '#/definitions/Resource'
-        - name: Slug
-          in: header
-          description: Suggested URI for resource
-          required: false
-          type: string
-        - name: Content-Type
-          in: header
-          description: Content-Type of resource
-          required: false
-          type: string
-
-      responses:
-
-        "200":
-          description: Successful response
-
-        "201":
-          description: Successful creation
-          headers:
-            Location:
-              description: URI to created resource
-              type: string
-        
-        "404":
-          description: Unable to find container
-
-        "405":
-          description: Method not allowed
-          headers:
-            Allow:
-              description: HTTP methods allowed
-              type: array
-              items:
-                type: string
-
-        "409":
-          description: URI Already Exists
-
-        default:
-          description: Unsuccessful response
-
-    put:
-
-      tags:
-        - OSLC-3.0
-
-      description: |
-        Updates container for this service
-
-      parameters:
-        - name: serviceID
-          in: path
-          description: ID of service
-          required: true
-          type: integer
-          format: int64
-        - name: containerID
-          in: path
-          description: LDP Container to get
-          required: true
-          type: integer
-          format: int64
-        - name: resource
-          in: body
-          description: Resource to insert into container
-          required: true
-          schema:
-            $ref: '#/definitions/Resource'
-        - name: Slug
-          in: header
-          description: Suggested URI for resource
-          required: false
-          type: string
-        - name: Content-Type
-          in: header
-          description: Content-Type of resource
-          required: false
-          type: string
-
-      responses:
-
-        "200":
-          description: Successful response
-
-        "404":
-          description: Unable to find container
-
-        "405":
-          description: Method not allowed
-          headers:
-            Allow:
-              description: HTTP methods allowed
-              type: array
-              items:
-                type: string
-
-        "409":
-          description: URI Already Exists
-
-        default:
-          description: Unsuccessful response
-
-    patch:
-
-      tags:
-        - OSLC-3.0
-
-      description: |
-        Updates container for this service
-
-      parameters:
-        - name: serviceID
-          in: path
-          description: ID of service
-          required: true
-          type: integer
-          format: int64
-        - name: containerID
-          in: path
-          description: LDP Container to get
-          required: true
-          type: integer
-          format: int64
-        - name: resource
-          in: body
-          description: Resource to insert into container
-          required: true
-          schema:
-            $ref: '#/definitions/Resource'
-
-      responses:
-
-        "200":
-          description: Successful response
-
-        "404":
-          description: Unable to find container
-
-        "405":
-          description: Method not allowed
-          headers:
-            Allow:
-              description: HTTP methods allowed
-              type: array
-              items:
-                type: string
-
-        "406":
-          description: Violates constraints on resource modification
-          headers:
-            Accept-Patch:
-                type: array
-                items:
-                  type: string
-
-        default:
-          description: Unsuccessful response
-
-    delete:
-
-      tags:
-        - OSLC-3.0
-
-      description: |
-        Deletes container in this service
-
-      parameters:
-        - name: serviceID
-          in: path
-          description: ID of service
-          required: true
-          type: integer
-          format: int64
-        - name: containerID
-          in: path
-          description: LDP Container to get
-          required: true
-          type: integer
-          format: int64
-
-      responses:
-
-        "200":
-          description: Successful response
-
-        "404":
-          description: Unable to find container
-
-        "405":
-          description: Method not allowed
-          headers:
-            Allow:
-              description: HTTP methods allowed
-              type: array
-              items:
-                type: string
-
-        default:
-          description: Unsuccessful response
-
-    options:
-
-      tags:
-        - OSLC-3.0
-
-      description: |
-        Gets HTTP operations available to this container
-
-      parameters:
-        - name: serviceID
-          in: path
-          description: ID of service
-          required: true
-          type: integer
-          format: int64
-        - name: containerID
-          in: path
-          description: LDP Container to get
-          required: true
-          type: integer
-          format: int64
-
-      responses:
-
-        "200":
-          description: Successful response
-          headers:
-            Accept:
-              type: array
-              items:
-                type: string
-
-            Accept-Patch:
-              type: array
-              items:
-                type: string
-
-        "404":
-          description: Unable to find container
-
-        default:
-          description: Unsuccessful response
-
-    head:
-
-      tags:
-        - OSLC-3.0
-
-      description: |
-        Returns header values similar to that in GET
-
-      parameters:
-        - name: serviceID
-          in: path
-          description: ID of service
-          required: true
-          type: integer
-          format: int64
-        - name: containerID
-          in: path
-          description: LDP Container to get
-          required: true
-          type: integer
-          format: int64
-
-      responses:
-
-        "200":
-          description: Successful response
-          headers:
-            Allow:
-              type: array
-              items:
-                type: string
-
-        "404":
-          description: Unable to find container
-
-        default:
-          description: Unsuccessful response
-
-  /services/{serviceID}/{containerID}/{resourceID}?{paging}:
-
-    get:
-
-      tags:
-        - OSLC-3.0
+        - OSLC-2.0
 
       description: |
         Obtain a specific resource by resourceID
@@ -1470,12 +1253,6 @@ paths:
         - name: serviceID
           in: path
           description: ID of service
-          required: true
-          type: integer
-          format: int64
-        - name: containerID
-          in: path
-          description: LDP Container to get
           required: true
           type: integer
           format: int64
@@ -1503,13 +1280,14 @@ paths:
         default:
           description: Unsuccessful response
 
-  # All chnages to a resource means that a ChangeEvent should be created for the Change Log in Resource Set
-  /services/{serviceID}/{containerID}/{resourceID}:
+
+  /services/{serviceID}/{resourceID}:
 
     get:
 
       tags:
         - OSLC-3.0
+        - OSLC-2.0
 
       description: |
         Gets resource within the container
@@ -1517,13 +1295,7 @@ paths:
       parameters:
         - name: serviceID
           in: path
-          description: ID of service
-          required: true
-          type: integer
-          format: int64
-        - name: containerID
-          in: path
-          description: LDP Container to get
+          description: Service container to get
           required: true
           type: integer
           format: int64
@@ -1563,6 +1335,7 @@ paths:
 
       tags:
         - OSLC-3.0
+        - OSLC-2.0
 
       description: |
         Creates resource within that container
@@ -1570,13 +1343,7 @@ paths:
       parameters:
         - name: serviceID
           in: path
-          description: ID of service
-          required: true
-          type: integer
-          format: int64
-        - name: containerID
-          in: path
-          description: LDP Container to get
+          description: Service container to get
           required: true
           type: integer
           format: int64
@@ -1621,6 +1388,7 @@ paths:
 
       tags:
         - OSLC-3.0
+        - OSLC-2.0
 
       description: |
         Updates resource in container for this service
@@ -1628,13 +1396,7 @@ paths:
       parameters:
         - name: serviceID
           in: path
-          description: ID of service
-          required: true
-          type: integer
-          format: int64
-        - name: containerID
-          in: path
-          description: LDP Container to get
+          description: Service container to get
           required: true
           type: integer
           format: int64
@@ -1692,6 +1454,7 @@ paths:
 
       tags:
         - OSLC-3.0
+        - OSLC-2.0
 
       description: |
         Updates resource for container in this service
@@ -1699,13 +1462,7 @@ paths:
       parameters:
         - name: serviceID
           in: path
-          description: ID of service
-          required: true
-          type: integer
-          format: int64
-        - name: containerID
-          in: path
-          description: LDP Container to get
+          description: Service container to get
           required: true
           type: integer
           format: int64
@@ -1748,6 +1505,7 @@ paths:
 
       tags:
         - OSLC-3.0
+        - OSLC-2.0
 
       description: |
         Deletes resource in this container
@@ -1755,13 +1513,7 @@ paths:
       parameters:
         - name: serviceID
           in: path
-          description: ID of service
-          required: true
-          type: integer
-          format: int64
-        - name: containerID
-          in: path
-          description: LDP Container to get
+          description: Service container to get
           required: true
           type: integer
           format: int64
@@ -1796,6 +1548,7 @@ paths:
 
       tags:
         - OSLC-3.0
+        - OSLC-2.0
 
       description: |
         Gets options for HTTP operations for this resource
@@ -1803,13 +1556,7 @@ paths:
       parameters:
         - name: serviceID
           in: path
-          description: ID of service
-          required: true
-          type: integer
-          format: int64
-        - name: containerID
-          in: path
-          description: LDP Container to get
+          description: Service container to get
           required: true
           type: integer
           format: int64
@@ -1845,6 +1592,7 @@ paths:
 
       tags:
         - OSLC-3.0
+        - OSLC-2.0
 
       description: |
         Gets header info that is seen in GET method
@@ -1852,13 +1600,7 @@ paths:
       parameters:
         - name: serviceID
           in: path
-          description: ID of service
-          required: true
-          type: integer
-          format: int64
-        - name: containerID
-          in: path
-          description: LDP Container to get
+          description: Service container to get
           required: true
           type: integer
           format: int64
@@ -1885,293 +1627,601 @@ paths:
         default:
           description: Unsuccessful response
 
-
-  /services/{serviceID}/{resourceID}?{paging}:
-
-    get:
-      
-      tags:
-        - OSLC-2.0
-
-      description: |
-        Obtain a specific resource by resourceID
-
-      parameters:
-        - name: serviceID
-          in: path
-          description: ID of service
-          required: true
-          type: integer
-          format: int64
-        - name: resourceID
-          in: path
-          description: ID of service
-          required: true
-          type: integer
-          format: int64
-        - name: paging
-          in: path
-          description: Query to enable paging with oslc:paging=true or oslc.pageSize=<integer>
-          required: true
-          type: string
-
-      responses:
-        "200":
-          description: Successful response
-          schema:
-            $ref: '#/definitions/Resource'
-        
-        "404":
-          description: Unable to find resource
-
-        default:
-          description: Unsuccessful response
-
-
-  /services/{serviceID}/{resourceID}:
-
-    put:
-
-      tags:
-        - OSLC-2.0
-
-      description: |
-        Update an OSLC resource.
-
-      parameters:
-        - name: serviceID
-          in: path
-          description: ID of service
-          required: true
-          type: integer
-          format: int64
-        - name: resourceID
-          in: path
-          description: ID of service
-          required: true
-          type: integer
-          format: int64
-        - name: resource
-          in: body
-          description: The resource to update
-          required: true
-          schema:
-            $ref: '#/definitions/Resource'
-
-      responses:
-        "200":
-          description: Successful response
-          schema:
-            $ref: '#/definitions/Resource'
-
-        "400":
-          description: If-match header is missing
-
-        "412": 
-          description: Headers don't match
-
-        "409":
-          description: |
-            Headers match, but another problem has occurred
-
-        default:
-          description: Unsuccessful response
-
-    delete:
-
-      tags:
-        - OSLC-2.0
-
-      description: |
-        Delete an OSLC resource
-
-      parameters:
-        - name: serviceID
-          in: path
-          description: ID of service
-          required: true
-          type: integer
-          format: int64
-        - name: resourceID
-          in: path
-          description: ID of service
-          required: true
-          type: integer
-          format: int64
-
-      responses:
-        "200":
-          description: Successful response
-          schema:
-            $ref: '#/definitions/Resource'
-
-        "404":
-          description: Unable to find resource
-
-        default:
-          description: Unsuccessful response
-
-    head:
-
-      tags:
-        - OSLC-2.0
-
-      description: |
-        Get the size of the resource
-
-      parameters:
-        - name: serviceID
-          in: path
-          description: ID of service
-          required: true
-          type: integer
-          format: int64
-        - name: resourceID
-          in: path
-          description: ID of service
-          required: true
-          type: integer
-          format: int64
-
-      responses:
-
-        "200":
-          description: Successful response
-
-          headers:
-            Content-Length:
-              type: integer
-              format: int64
-
-        "404":
-          description: Unable to find resource
-
-        default:
-          description: Unsuccessful response
-
-
-    get:
-
-      tags:
-        - OSLC-2.0
-      description: |
-        Obtain a specific resource by resourceID
-
-      parameters:
-        - name: serviceID
-          in: path
-          description: ID of service
-          required: true
-          type: integer
-          format: int64
-        - name: resourceID
-          in: path
-          description: ID of service
-          required: true
-          type: integer
-          format: int64
-
-      responses:
-        "200":
-          description: Successful response
-          schema:
-            $ref: '#/definitions/Resource'
-        
-        "404":
-          description: Unable to find resource
-
-        default:
-          description: Unsuccessful response
-
+          
 definitions:
 
   # Defines a Service Provider as described in
   # The OSLC 2.0 specifications
-  ServiceProvider:
+
+  variable:
+    type: object
     required:
-      - serviceProviderID
-      - dcterms:title
-      - dcterms:description
-      - dcterms:publisher
-      - oslc:service
-      - oslc:details
-      - oslc:prefixDefinition
-      - oslc:oauthConfiguration
+      - "@id"
+      - "@type"
     properties:
-      serviceProviderID:
-        type: integer
-        format: int64
-      dcterms:title:
+      "@id":
         type: string
-        format: string
-      dcterms:description:
+        format: uri
+      "@type":
         type: string
-        format: string
-      dcterms:publisher:
+        format: uri
+
+  Publisher:
+
+    required:
+      - "@id"
+      - "@type"
+      - icon
+      - identifier
+      - title
+
+    properties:
+      "@id":
         type: string
-        format: string
-      oslc:service:
+        format: uri
+      "@type":
         type: string
-      oslc:details:
+        format: uri
+      icon:
         type: string
-        format: string
-      oslc:prefixDefinition:
+        format: uri
+      identifier:
         type: string
-        format: string
-      oslc:oauthConfiguration:
+      title:
         type: string
 
-  # Defines an array of Service Providers
-  ServiceProviders:
-    type: array
-    items:
-      $ref: '#/definitions/ServiceProvider'
+  ServiceProvider:
+
+    required:
+      - "@graph"
+      - "@id"
+      - "@context"
+
+    properties:
+      "@graph":
+        type: array
+        items:
+          allOf:
+            - $ref: "#/definitions/ServiceProviderService"
+            - $ref: "#/definitions/Dialog"
+            - $ref: "#/definitions/Query"
+            - $ref: "#/definitions/CreationFactory"
+            - $ref: "#/definitions/Publisher"
+            #- $ref: "#/definitions/ServiceProviderUIPreview"
+            - $ref: "#/definitions/ServiceProviderInfo"
+
+      "@id":
+        type: string
+      "@context":
+        $ref: "#/definitions/ServiceProviderContext"
+
+  ServiceProviderService:
+
+    required:
+      - "@id"
+      - "@type"
+      - creationDialog
+      - creationFactory
+      - domain
+      - queryCapability
+
+    properties:
+      "@id":
+        type: string
+        format: uri
+      "@type":
+        type: string
+        format: uri
+      creationDialog:
+        type: array
+        items:
+          type: string
+          format: uri
+      creationFactory:
+        type: array
+        items:
+          type: string
+          format: uri
+      domain:
+        type: string
+        format: uri
+      queryCapability:
+        type: array
+        items:
+          type: string
+          format: uri
+
+  Dialog:
+
+    required:
+      - "@id"
+      - "@type"
+      - dialog
+      - hintHeight
+      - hintWidth
+      - label
+      - resourceType
+      - usage
+      - title
+    properties:
+      "@id":
+        type: string
+        format: uri
+      "@type":
+        type: string
+        format: uri
+      dialog:
+        type: string
+        format: uri
+      hintHeight:
+        type: string
+      hintWidth:
+        type: string
+      label:
+        type: string
+      resourceType:
+        type: string
+        format: uri
+      usage:
+        type: string
+        format: uri
+      title:
+        type: string
+
+  Query:
+
+    required:
+      - "@id"
+      - "@type"
+      - queryBase
+      - resourceShape
+      - resourceType
+      - usage
+      - title
+    properties:
+      "@id":
+        type: string
+        format: uri
+      "@type":
+        type: string
+        format: uri
+      queryBase:
+        type: string
+        format: uri
+      resourceShape:
+        type: string
+        format: uri
+      resourceType:
+        type: string
+        format: uri
+      usage:
+        type: string
+        format: uri
+      title:
+        type: string
+
+  CreationFactory:
+
+    required:
+      - "@id"
+      - "@type"
+      - creation
+      - resourceShape
+      - resourceType
+      - usage
+      - title
+    properties:
+      "@id":
+        type: string
+        format: uri
+      "@type":
+        type: string
+        format: uri
+      creation:
+        type: string
+        format: uri
+      resourceShape:
+        type: string
+        format: uri
+      resourceType:
+        type: string
+        format: uri
+      usage:
+        type: string
+        format: uri
+      title:
+        type: string
+
+  ServiceProviderInfo:
+
+    required:
+      - "@id"
+      - "@type"
+      - details
+      - service
+      - publisher
+      - title
+
+    properties:
+      "@id":
+        type: string
+        format: uri
+      "@type":
+        type: string
+        format: uri
+      details:
+        type: string
+        format: uri
+      service:
+        type: string
+        format: uri
+      publisher:
+        type: string
+        format: uri
+      title:
+        type: string
+
+  ServiceProviderContext:
+
+    required:
+      - creationDialog
+      - queryCapability
+      - creationFactory
+      - domain
+      - queryBase
+      - resourceShape
+      - resourceType
+      - usage
+      - title
+      - creation
+      - hintHeight
+      - hintWidth
+      - dialog
+      - label
+      - service
+      - publisher
+      - details
+      - icon
+      - identifier
+      - rdf
+      - ns1
+      - dc
+      - oslc
+      - oslc_cm
+      - ns3
+
+    properties:
+      creationDialog:
+        $ref: "#/definitions/variable"
+      queryCapability:
+        $ref: "#/definitions/variable"
+      creationFactory:
+        $ref: "#/definitions/variable"
+      domain:
+        $ref: "#/definitions/variable"
+      queryBase:
+        $ref: "#/definitions/variable"
+      resourceShape:
+        $ref: "#/definitions/variable"
+      resourceType:
+        $ref: "#/definitions/variable"
+      usage:
+        $ref: "#/definitions/variable"
+      title:
+        $ref: "#/definitions/variable"
+      creation:
+        $ref: "#/definitions/variable"
+      hintHeight:
+        type: string
+        format: uri
+      hintWidth:
+        type: string
+        format: uri
+      dialog:
+        $ref: "#/definitions/variable"
+      label:
+        type: string
+        format: uri
+      service:
+        $ref: "#/definitions/variable"
+      publisher:
+        $ref: "#/definitions/variable"
+      details:
+        $ref: "#/definitions/variable"
+      icon:
+        $ref: "#/definitions/variable"
+      identifier:
+        type: string
+        format: uri
+      rdf:
+        type: string
+        format: uri
+      ns1:
+        type: string
+        format: uri
+      dc:
+        type: string
+        format: uri
+      oslc:
+        type: string
+        format: uri
+      oslc_cm:
+        type: string
+        format: uri
+      ns3:
+        type: string
+        format: uri
+
+  ServiceProviderCatalog:
+    type: object
+    required:
+      - "@graph"
+      - "@id"
+      - "@context"
+
+    properties:
+      "@graph":
+        type: array
+        items:
+          allOf:
+           - $ref: "#/definitions/Publisher"
+           - $ref: "#/definitions/ServiceProviderCatInfo"
+           - $ref: "#/definitions/ServiceProviderCatalogInfo"
+      "@id":
+        type: string # Should it be a URI?
+      "@context":
+        $ref: "#/definitions/CatalogContext"
+
+  ServiceProviderCatInfo:
+    type: object
+    required:
+      - "@id"
+      - "@type"
+      - details
+      - identifier
+      - title
+    properties:
+      "@id":
+        type: string
+        format: uri
+      "@type":
+        type: string
+        format: uri
+      details:
+        type: string
+        format: uri
+      identifier:
+        type: string
+      title:
+        type: string
+
+  ServiceProviderCatalogInfo:
+    type: object
+    required:
+      - "@id"
+      - "@type"
+      - domain
+      - serviceProvider
+      - publisher
+      - title
+    properties:
+      "@id":
+        type: string
+        format: uri
+      "@type":
+        type: string
+        format: uri
+      domain:
+        type: string
+        format: uri
+      serviceProvider:
+        type: array
+        items:
+          type: string
+          format: uri
+      publisher:
+        type: string
+        format: uri # Is it a URI?
+      title:
+        type: string
+
+  CatalogContext:
+    type: object
+    required:
+      - icon
+      - identifier
+      - title
+      - serviceProvider
+      - domain
+      - publisher
+      - details
+      - rdf
+      - dc
+      - oslc
+    properties:
+      icon:
+        $ref: "#/definitions/variable"
+      identifier:
+        type: string
+        format: uri
+      title:
+        $ref: "#/definitions/variable"
+      serviceProvider:
+        $ref: "#/definitions/variable"
+      domain:
+        $ref: "#/definitions/variable"
+      publisher:
+        $ref: "#/definitions/variable"
+      details:
+        $ref: "#/definitions/variable"
+      rdf:
+        type: string
+        format: uri
+      dc:
+        type: string
+        format: uri
+      oslc:
+        type: string
+        format: uri
 
   # Defines a Service as described in
   # The OSLC 2.0 specifications
   Service:
     required:
-      - serviceID
-      - oslc:domain
-      - oslc:creationFactory
-      - oslc:queryCapability
-      - oslc:selectionDialog
-      - oscl:creationDialog
-      - oslc:usage
+      - "@graph"
+      - "@id"
+      - "@context"
     properties:
-      serviceID:
-        type: integer
-        format: int64
-      oslc:domain:
+      "@graph":
+        type: array
+        items:
+          allOf:
+            - $ref: "#/definitions/ServiceInfo"
+            - $ref: "#/definitions/Dialog"
+            - $ref: "#/definitions/Query"
+            - $ref: "#/definitions/CreationFactory"
+            - $ref: "#/definitions/Publisher"
+
+      "@id":
         type: string
-      oslc:creationFactory:
+        format: uri
+      "@context":
+        $ref: "#/definitions/ServiceContext"
+
+  ServiceInfo:
+
+    required:
+      - "@id"
+      - "@type"
+      - creationDialog
+      - creationFactory
+      - domain
+      - queryCapability
+
+    properties:
+      "@id":
         type: string
-      oslc:queryCapability:
+        format: uri
+      "@type":
         type: string
-      oslc:selectionDialog:
+        format: uri
+      creationDialog:
+        type: array
+        items:
+          type: string
+          format: uri
+      creationFactory:
+        type: array
+        items:
+          type: string
+          format: uri
+      domain:
         type: string
-      oscl:creationDialog:
+        format: uri
+      queryCapability:
+        type: array
+        items:
+          type: string
+          format: uri
+
+  ServiceContext:
+    
+    required:
+      - icon
+      - identifier
+      - title
+      - usage
+      - resourceType
+      - resourceShape
+      - creation
+      - queryBase
+      - label
+      - dialog
+      - hintHeight
+      - hintWidth
+      - creationDialog
+      - creationFactory
+      - domain
+      - queryCapability
+    properties:
+      icon:
+        $ref: "#/definitions/variable"
+      identifier:
+        $ref: "#/definitions/variable"
+      title:
+        $ref: "#/definitions/variable"
+      usage:
+        $ref: "#/definitions/variable"
+      resourceType:
+        $ref: "#/definitions/variable"
+      resourceShape:
+        $ref: "#/definitions/variable"
+      creation:
+        $ref: "#/definitions/variable"
+      queryCapability:
+        $ref: "#/definitions/variable"
+      queryBase:
+        $ref: "#/definitions/variable"
+      label:
+        $ref: "#/definitions/variable"
+      dialog:
+        $ref: "#/definitions/variable"
+      creationDialog:
+        $ref: "#/definitions/variable"
+      creationFactory:
+        $ref: "#/definitions/variable"
+      domain:
+        $ref: "#/definitions/variable"
+      hintHeight:
         type: string
-      oslc:usage:
+        format: uri
+      hintWidth:
         type: string
-      oslc:uiPreview:
+        format: uri
+      publisher:
+        $ref: "#/definitions/variable"
+      details:
+        $ref: "#/definitions/variable"
+      rdf:
         type: string
+        format: uri
+      ns1:
+        type: string
+        format: uri
+      dc:
+        type: string
+        format: uri
+      oslc:
+        type: string
+        format: uri
+      oslc_cm:
+        type: string
+        format: uri
+      ns3:
+        type: string
+        format: uri
+
 
   # Defines a Resource as described in
   # The OSLC 2.0 specifications
   Resource:
     required:
-      - resourceID
+      - "@id"
+      - "@type"
       - name
       - URI
     properties:
-      resourceID:
-        type: integer
-        format: int64
+      "@id":
+        type: string
+        format: uri
+      "@type":
+        type: string
+        format: uri
       name:
         type: string
       URI:
         type: string
+        format: uri
       oslc:nextPage: # URL to next page of Resource is paging is enabled
         type: string
 
@@ -2229,7 +2279,7 @@ definitions:
   ResourceSet:
     required:
       - ChangeLog
-      - base
+      - Base
     properties:
       ChangeLog:
         $ref: '#/definitions/ChangeLog'

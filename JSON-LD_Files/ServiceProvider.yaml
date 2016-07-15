@@ -13,10 +13,10 @@ definitions:
         items:
           allOf:
             - $ref: "#/definitions/ServiceProviderService"
-            - $ref: "#/definitions/ServiceProviderDialog"
-            - $ref: "#/definitions/ServiceProviderQuery"
-            - $ref: "#/definitions/ServiceProviderCreationFactory"
-            - $ref: "#/definitions/ServiceProviderPublisher"
+            - $ref: "#/definitions/Dialog"
+            - $ref: "#/definitions/Query"
+            - $ref: "#/definitions/CreationFactory"
+            - $ref: "#/definitions/Publisher"
             #- $ref: "#/definitions/ServiceProviderUIPreview"
             - $ref: "#/definitions/ServiceProviderInfo"
 
@@ -61,7 +61,7 @@ definitions:
           type: string
           format: uri
 
-  ServiceProviderDialog:
+  Dialog:
 
     required:
       - "@id"
@@ -98,7 +98,7 @@ definitions:
       title:
         type: string
 
-  ServiceProviderQuery:
+  Query:
 
     required:
       - "@id"
@@ -130,7 +130,7 @@ definitions:
       title:
         type: string
 
-  ServiceProviderCreationFactory:
+  CreationFactory:
 
     required:
       - "@id"
@@ -162,7 +162,7 @@ definitions:
       title:
         type: string
 
-  ServiceProviderPublisher:
+  Publisher:
 
     required:
       - "@id"
