@@ -1,0 +1,196 @@
+
+definitions:
+
+  ServiceProviderCatalog:
+    type: object
+  	required:
+  		- "@graph"
+      - "@id"
+  		- "@context"
+
+  	properties:
+  		"@graph":
+        type: array
+        items:
+          allOf:
+  			   - $ref: "#/definitions/Publisher"
+           - $ref: "#/definitions/ServiceProviderInfo"
+           - $ref: "#/definitions/ServiceProviderCatalogInfo"
+      "@id":
+        type: string # Should it be a URI?
+  		"@context":
+  			$ref: "#/definitions/CatalogContext"
+
+  Publisher:
+    type: object
+    required:
+      - "@id"
+      - "@type"
+      - identifier
+      - title
+    properties:
+      "@id":
+        type: string
+        format: uri
+      "@type":
+        type: string
+        format: uri
+      icon:
+        type: string
+        format: uri
+      identifier:
+        type: string
+        format: uri
+      title:
+        type: string
+      label:
+        type: string
+
+  ServiceProviderInfo:
+    type: object
+    required:
+      - "@id"
+      - "@type"
+      - details
+      - identifer
+      - title
+    properties:
+      "@id":
+        type: string
+        format: uri
+      "@type":
+        type: string
+        format: uri
+      details:
+        type: string
+        format: uri
+      identifier:
+        type: string
+      title:
+        type: string
+
+  ServiceProviderCatalogInfo:
+    type: object
+    required:
+      - "@id"
+      - "@type"
+    properties:
+      "@id":
+        type: string
+        format: uri
+      "@type":
+        type: string
+        format: uri
+      domain:
+        type: array
+        items:
+          type: string
+          format: uri
+      serviceProvider:
+        type: array
+        items:
+          type: string
+          format: uri
+      publisher:
+        type: string
+        format: uri
+      serviceProviderCatalog:
+        type: array"
+        items:
+          type: string
+          format: uri
+      description:
+        type: string
+        format: uri
+      oauthConfiguration:
+        type: array
+        items:
+          $ref: "#/definitions/OAuthConfiguration"
+      title:
+        type: string
+
+  OAuthConfiguration:
+    type: object
+    required:
+      - oauthRequestTokenURI
+      - authorizationURI
+      - oauthAccessTokenURI
+    properties:
+      oauthRequestTokenURI:
+        type: string
+        format: uri
+      authorizationURI:
+        type: string
+        format: uri
+      oauthAccessTokenURI:
+        type: string
+        format: uri
+
+  CatalogContext:
+    type: object
+    required:
+      - icon
+      - identifier
+      - title
+      - label
+      - serviceProvider
+      - domain
+      - publisher
+      - details
+      - oauthRequestTokenURI
+      - authorizationURI
+      - oauthAccessTokenURI
+      - rdf
+      - dc
+      - oslc
+    properties:
+      icon:
+        $ref: "#/definitions/variable"
+      identifier:
+        type: string
+        format: uri
+      title:
+        $ref: "#/definitions/variable"
+      label:
+        $ref: "#/definitions/variable"
+      serviceProvider:
+        $ref: "#/definitions/variable"
+      domain:
+        $ref: "#/definitions/variable"
+      publisher:
+        $ref: "#/definitions/variable"
+      details:
+        $ref: "#/definitions/variable"
+      oauthRequestTokenURI:
+        $ref: "#/definitions/variable"
+      authorizationURI:
+        $ref: "#/definitions/variable"
+      oauthAccessTokenURI:
+        $ref: "#/definitions/variable"
+      description:
+        $ref: "#/definitions/variable"
+      serviceProviderCatalog:
+        $ref: "#/definitions/variable"
+      rdf:
+        type: string
+        format: uri
+      dc:
+        type: string
+        format: uri
+      oslc:
+        type: string
+        format: uri
+
+  variable:
+    type: object
+    required:
+      - "@id"
+      - "@type"
+    properties:
+      "@id":
+        type: string
+        format: uri
+      "@type":
+        type: string
+        format: uri
+

@@ -362,6 +362,11 @@ paths:
               type: array
               items:
                 type: string
+            Link:
+              type: array
+              items:
+                type: string
+                format: uri
 
         "404":
           description: Unable to find container
@@ -674,7 +679,7 @@ paths:
         - LDP
 
       description: |
-        Gets the header values similar to taht in GET
+        Gets the header values similar to that in GET
 
       parameters:
         - name: containerID
@@ -796,6 +801,71 @@ paths:
 
         default:
           description: Unsuccessful response
+
+    options:
+
+      tags:
+        - OSLC-3.0
+
+      description: |
+        Gets options for HTTP methods to utilize for this service
+
+      responses:
+
+        "200":
+          description: Successful response
+          headers:
+            Accept:
+              type: array
+              items:
+                type: string
+
+            Accept-Patch:
+              type: array
+              items:
+                type: string
+
+            Link:
+              type: array
+              items:
+                type: string
+                format: uri
+
+        "404":
+          description: Unable to find container
+
+        default:
+          description: Unsuccessful response
+
+    # What should be returned here??
+    head:
+
+      tags:
+        - OSLC-3.0
+
+      description: |
+        Gets the header values that would normally be found in the header of GET
+
+      responses:
+
+        "200":
+          description: Successful response
+          headers:
+            Allow:
+              type: array
+              items:
+                type: string
+            Link:
+              type: array
+              items:
+                type: string
+                format: uri
+
+        "404":
+          description: Unable to find container
+
+        default:
+          description: Unsuccessful response
  
   # Path to a Service Provider, as specified in "serviceProviderID"
   /services/serviceProviders/{serviceProviderID}:
@@ -825,6 +895,76 @@ paths:
 
           schema:
             $ref: "#/definitions/ServiceProvider"
+
+        default:
+          description: Unsuccessful response
+
+    options:
+
+      tags:
+        - OSLC-3.0
+
+      description: |
+        Gets options for HTTP methods to utilize for this container
+
+      parameters:
+        - name: serviceProviderID
+          in: path
+          description: ID of service provider
+          required: true
+          type: integer
+          format: int64
+
+      responses:
+
+        "200":
+          description: Successful response
+          headers:
+            Accept:
+              type: array
+              items:
+                type: string
+
+            Accept-Patch:
+              type: array
+              items:
+                type: string
+
+        "404":
+          description: Unable to find container
+
+        default:
+          description: Unsuccessful response
+
+    # What should be returned here??
+    head:
+
+      tags:
+        - OSLC-3.0
+
+      description: |
+        Gets the header values that would normally be found in the header of GET
+
+      parameters:
+        - name: serviceProviderID
+          in: path
+          description: ID of service provider
+          required: true
+          type: integer
+          format: int64
+
+      responses:
+
+        "200":
+          description: Successful response
+          headers:
+            Allow:
+              type: array
+              items:
+                type: string
+
+        "404":
+          description: Unable to find container
 
         default:
           description: Unsuccessful response
@@ -864,6 +1004,87 @@ paths:
 
         "404":
           description: Unable to find resource
+
+        default:
+          description: Unsuccessful response
+
+    options:
+
+      tags:
+        - OSLC-3.0
+
+      description: |
+        Gets options for HTTP methods to utilize for this service
+
+      parameters:
+        - name: serviceID
+          in: path
+          description: ID of service
+          required: true
+          type: integer
+          format: int64
+
+      responses:
+
+        "200":
+          description: Successful response
+          headers:
+            Accept:
+              type: array
+              items:
+                type: string
+
+            Accept-Patch:
+              type: array
+              items:
+                type: string
+
+            Link:
+              type: array
+              items:
+                type: string
+                format: uri
+
+        "404":
+          description: Unable to find container
+
+        default:
+          description: Unsuccessful response
+
+    # What should be returned here??
+    head:
+
+      tags:
+        - OSLC-3.0
+
+      description: |
+        Gets the header values that would normally be found in the header of GET
+
+      parameters:
+        - name: serviceID
+          in: path
+          description: ID of service
+          required: true
+          type: integer
+          format: int64
+
+      responses:
+
+        "200":
+          description: Successful response
+          headers:
+            Allow:
+              type: array
+              items:
+                type: string
+            Link:
+              type: array
+              items:
+                type: string
+                format: uri
+
+        "404":
+          description: Unable to find container
 
         default:
           description: Unsuccessful response
@@ -1104,7 +1325,7 @@ paths:
 
   # Path to the UI Preview within the Service
   # This may not exist for some services
-  /services/{serviceID}/preview:
+  /services/{serviceID}/{resourceID}/preview:
 
     # GET the UI Preview
     get:
@@ -1124,12 +1345,12 @@ paths:
           required: true
           type: integer
           format: int64
-        - name: resource
-          in: body
+        - name: resourceID
+          in: path
           description: URI for resource
           required: true
-          schema:
-            type: string
+          type: integer
+          format: int64
 
       consumes:
           - "application/x-oslc-compact+json"
@@ -1147,6 +1368,9 @@ paths:
           headers:
             vary:
               type: string # URI directed to cache
+
+          schema:
+            $ref: "#/definitions/UIPreview"
 
         "406":
           description: Compact representation not supported
@@ -1201,7 +1425,7 @@ paths:
           description: Unsuccessful response
 
 
-  /services//{resourceID}?{paging}:
+  /services/{resourceID}?{paging}:
 
     get:
 
@@ -2286,3 +2510,85 @@ definitions:
       Base:
         $ref: '#/definitions/LDPContainer'
 
+  UIPreview:
+
+    required:
+      - "@graph"
+      - "@id"
+      - "@context"
+    properties:
+      "@graph":
+        $ref: "#/definitions/UIPreviewInfo"
+      "@id":
+        type: string
+      "@context":
+        $ref: "#/definitions/UIPreviewContext"
+
+  UIPreviewInfo:
+
+    required:
+      - "@id"
+      - "@type"
+
+    properties:
+      "@id":
+        type: string
+        format: uri
+      "@type":
+        type: string
+        format: uri
+      title:
+        type: string
+      shortTitle:
+        type: string
+      icon:
+        type: string
+        format: uri
+      iconAtLabel:
+        type: string
+      smallPreview:
+        $ref: "#/definitions/Preview"
+      largePreview:
+        $ref: "#/definitions/Preview"
+
+  Preview:
+
+    required:
+      - "@id"
+      - "@type"
+    properties:
+      "@id":
+        type: string
+        format: uri
+      "@type":
+        type: string
+        format: uri
+      document:
+        type: string
+        format: uri
+      hintWidth:
+        type: string
+      hintHeight:
+        type: string
+      initialHeight:
+        type: string
+
+  UIPreviewContext:
+
+    required:
+      - "@id"
+      - "@type"
+
+    properties:
+      "@id":
+        type: string
+        format: uri
+      "@type":
+        type: string
+        format: uri
+      title:
+        type: string
+        format: uri
+      shortTitle:
+        type: string
+        format: uri

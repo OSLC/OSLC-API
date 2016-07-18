@@ -1,0 +1,515 @@
+definitions:
+
+	ServiceProvider:
+
+    required:
+      - "@graph"
+      - "@id"
+      - "@context"
+
+    properties:
+      "@graph":
+        type: array
+        items:
+          allOf:
+            - $ref: "#/definitions/ServiceProviderService"
+            - $ref: "#/definitions/Dialog"
+            - $ref: "#/definitions/Query"
+            - $ref: "#/definitions/CreationFactory"
+            - $ref: "#/definitions/Publisher"
+            - $ref: "#/definitions/ServiceProviderInfo"
+
+      "@id":
+        type: string
+      "@context":
+        $ref: "#/definitions/ServiceProviderContext"
+
+  ServiceProviderService:
+
+    required:
+      - "@id"
+      - "@type"
+      - creationDialog
+      - creationFactory
+      - domain
+      - queryCapability
+
+    properties:
+      "@id":
+        type: string
+        format: uri
+      "@type":
+        type: string
+        format: uri
+      creationDialog:
+        type: array
+        items:
+          type: string
+          format: uri
+      creationFactory:
+        type: array
+        items:
+          type: string
+          format: uri
+      domain:
+        type: string
+        format: uri
+      queryCapability:
+        type: array
+        items:
+          type: string
+          format: uri
+
+  Dialog:
+
+    required:
+      - "@id"
+      - "@type"
+      - dialog
+      - hintHeight
+      - hintWidth
+      - label
+      - resourceType
+      - usage
+      - title
+    properties:
+      "@id":
+        type: string
+        format: uri
+      "@type":
+        type: string
+        format: uri
+      dialog:
+        type: string
+        format: uri
+      hintHeight:
+        type: string
+      hintWidth:
+        type: string
+      label:
+        type: string
+      resourceType:
+        type: string
+        format: uri
+      usage:
+        type: string
+        format: uri
+      title:
+        type: string
+
+  Query:
+
+    required:
+      - "@id"
+      - "@type"
+      - queryBase
+      - resourceShape
+      - resourceType
+      - usage
+      - title
+    properties:
+      "@id":
+        type: string
+        format: uri
+      "@type":
+        type: string
+        format: uri
+      queryBase:
+        type: string
+        format: uri
+      resourceShape:
+        type: string
+        format: uri
+      resourceType:
+        type: string
+        format: uri
+      usage:
+        type: string
+        format: uri
+      title:
+        type: string
+
+  OAuthConfiguration:
+    type: object
+    required:
+      - oauthRequestTokenURI
+      - authorizationURI
+      - oauthAccessTokenURI
+    properties:
+      oauthRequestTokenURI:
+        type: string
+        format: uri
+      authorizationURI:
+        type: string
+        format: uri
+      oauthAccessTokenURI:
+        type: string
+        format: uri
+
+  CreationFactory:
+
+    required:
+      - "@id"
+      - "@type"
+      - creation
+      - resourceShape
+      - resourceType
+      - usage
+      - title
+    properties:
+      "@id":
+        type: string
+        format: uri
+      "@type":
+        type: string
+        format: uri
+      creation:
+        type: string
+        format: uri
+      resourceShape:
+        type: string
+        format: uri
+      resourceType:
+        type: string
+        format: uri
+      usage:
+        type: string
+        format: uri
+      title:
+        type: string
+
+  Publisher:
+
+    required:
+      - "@id"
+      - "@type"
+      - icon
+      - identifier
+      - title
+
+    properties:
+      "@id":
+        type: string
+        format: uri
+      "@type":
+        type: string
+        format: uri
+      icon:
+        type: string
+        format: uri
+      identifier:
+        type: string
+      title:
+        type: string
+
+  ServiceProviderInfo:
+
+    required:
+      - "@id"
+      - "@type"
+      - details
+      - service
+
+    properties:
+      "@id":
+        type: string
+        format: uri
+      "@type":
+        type: string
+        format: uri
+      description:
+        type: string
+        format: uri
+      details:
+        type: array
+          items:
+            type: string
+            format: uri
+      service:
+        type: array
+          items:
+            type: string
+            format: uri
+      publisher:
+        type: string
+        format: uri
+      title:
+        type: string
+      oauthConfiguration:
+        $ref: "#/definitions/OAuthConfiguration"
+      prefixDefinition:
+        type: array
+        items:
+          type: string
+          format: uri
+
+  PrefixDefinition:
+    required:
+      - "@id"
+      - "@type"
+      - prefix
+      - prefixBase
+    properties:
+      "@id":
+        type: string
+        format: uri
+      "@type":
+        type: string
+        format: uri
+      prefix:
+        type: string
+      prefixBase:
+        type: string
+        format: uri
+
+  ServiceProviderContext:
+
+    required:
+      - creationDialog
+      - queryCapability
+      - creationFactory
+      - domain
+      - queryBase
+      - resourceShape
+      - resourceType
+      - usage
+      - title
+      - creation
+      - hintHeight
+      - hintWidth
+      - dialog
+      - label
+      - service
+      - publisher
+      - details
+      - icon
+      - identifier
+      - oauthRequestTokenURI
+      - authorizationURI
+      - oauthAccessTokenURI
+      - prefix
+      - prefixBase
+      - rdf
+      - ns1
+      - dc
+      - oslc
+      - oslc_cm
+      - ns3
+
+  properties:
+    creationDialog:
+      $ref: "#/definitions/variable"
+    queryCapability:
+      $ref: "#/definitions/variable"
+    creationFactory:
+      $ref: "#/definitions/variable"
+    domain:
+      $ref: "#/definitions/variable"
+    queryBase:
+      $ref: "#/definitoins/variable"
+    resourceShape:
+      $ref: "#/definitions/variable"
+    resourceType:
+      $ref: "#/definitions/variable"
+    usage:
+      $ref: "#/definitions/variable"
+    title:
+      $ref: "$/definitions/variable"
+    creation:
+      $ref: "#/definitions/variable"
+    hintHeight:
+      type: string
+      format: uri
+    hintWidth:
+      type: string
+      format: uri
+    dialog:
+      $ref: "#/definitions/variable"
+    label:
+      type: string
+      format: uri
+    service:
+      $ref: "#/definitions/variable"
+    publisher:
+      $ref: "#/definitions/variable"
+    details:
+      $ref: "#/definitions/variable"
+    icon:
+      $ref: "#/definitions/variable"
+    identifier:
+      type: string
+      format: uri
+    oauthRequestTokenURI:
+      $ref: "#/definitions/variable"
+    authorizationURI:
+      $ref: "#/definitions/variable"
+    oauthAccessTokenURI:
+      $ref: "#/definitions/variable"
+    
+    rdf:
+      type: string
+      format: uri
+    ns1:
+      type: string
+      format: uri
+    dc:
+      type: string
+      format: uri
+    oslc:
+      type: string
+      format: uri
+    oslc_cm:
+      type: string
+      format: uri
+    ns3:
+      type: string
+      format: uri
+
+{
+  "@graph" : [ {
+    "@id" : "_:b0",
+    "@type" : "oslc:Service",
+    "creationDialog" : [ "_:b1", "_:b2" ],
+    "creationFactory" : [ "_:b5", "_:b6" ],
+    "domain" : "http://open-services.net/ns/cm#",
+    "queryCapability" : [ "_:b3", "_:b4" ]
+  }, {
+    "@id" : "_:b1",
+    "@type" : "oslc:Dialog",
+    "dialog" : "https://example.com/ccm/oslc/service-providers/provider-2/defect.html",
+    "hintHeight" : "505px",
+    "hintWidth" : "680px",
+    "label" : "Defect",
+    "resourceType" : "oslc_cm:ChangeRequest",
+    "usage" : "oslc_cm:defect",
+    "title" : "New Defect"
+  }, {
+    "@id" : "_:b2",
+    "@type" : "oslc:Dialog",
+    "dialog" : "https://example.com/ccm/oslc/service-providers/provider-2/task.html",
+    "hintHeight" : "505px",
+    "hintWidth" : "680px",
+    "label" : "Task",
+    "resourceType" : "oslc_cm:ChangeRequest",
+    "usage" : [ "oslc_cm:task", "oslc:default" ],
+    "title" : "New Task"
+  }, {
+    "@id" : "_:b3",
+    "@type" : "oslc:QueryCapability",
+    "queryBase" : "https://example.com/ccm/oslc/service-providers/provider-2/tasks",
+    "resourceShape" : "http://open-services.net/ns/cm/shapes/2.0/changerequest",
+    "resourceType" : "oslc_cm:ChangeRequest",
+    "usage" : "oslc:default",
+    "title" : "Defect queries"
+  }, {
+    "@id" : "_:b4",
+    "@type" : "oslc:QueryCapability",
+    "queryBase" : "https://example.com/ccm/oslc/service-providers/provider-2/tasks",
+    "resourceShape" : "http://open-services.net/ns/cm/shapes/2.0/changerequest",
+    "resourceType" : "oslc_cm:ChangeRequest",
+    "usage" : "oslc:default",
+    "title" : "Task queries"
+  }, {
+    "@id" : "_:b5",
+    "@type" : "oslc:CreationFactory",
+    "creation" : "https://example.com/ccm/oslc/service-providers/provider-2/defects",
+    "resourceShape" : "http://open-services.net/ns/cm/shapes/2.0/changerequest",
+    "resourceType" : "oslc_cm:ChangeRequest",
+    "usage" : "oslc_cm:defect",
+    "title" : "Location for creation of Defect change requests"
+  }, {
+    "@id" : "_:b6",
+    "@type" : "oslc:CreationFactory",
+    "creation" : "https://example.com/ccm/oslc/service-providers/provider-2/tasks",
+    "resourceShape" : "http://open-services.net/ns/cm/shapes/2.0/changerequest",
+    "resourceType" : "oslc_cm:ChangeRequest",
+    "usage" : [ "oslc_cm:task", "oslc:default" ],
+    "title" : "Location for creation of Task change requests"
+  }, {
+    "@id" : "_:b7",
+    "@type" : "oslc:Publisher",
+    "icon" : "https://oslclnx2.rtp.raleigh.ibm.com:9443/ccm/web/com.ibm.team.rtc.web/ui/graphics/UICustomizations/RationalTeamConcert.ico",
+    "identifier" : "com.ibm.team.workitem",
+    "title" : "IBM Rational Team Concert Work Items"
+  }, {
+    "@id" : "https://example.com/ccm/oslc/service-providers/provider-2",
+    "@type" : "oslc:ServiceProvider",
+    "details" : "https://example.com/ccm/oslc/service-providers/provider-2.html",
+    "service" : "_:b0",
+    "publisher" : "_:b7",
+    "title" : "Acne CM"
+  } ],
+  "@id" : "urn:x-arq:DefaultGraphNode",
+  "@context" : {
+    "creationDialog" : {
+      "@id" : "http://open-services.net/ns/core#creationDialog",
+      "@type" : "@id"
+    },
+    "queryCapability" : {
+      "@id" : "http://open-services.net/ns/core#queryCapability",
+      "@type" : "@id"
+    },
+    "creationFactory" : {
+      "@id" : "http://open-services.net/ns/core#creationFactory",
+      "@type" : "@id"
+    },
+    "domain" : {
+      "@id" : "http://open-services.net/ns/core#domain",
+      "@type" : "@id"
+    },
+    "queryBase" : {
+      "@id" : "http://open-services.net/ns/core#queryBase",
+      "@type" : "@id"
+    },
+    "resourceShape" : {
+      "@id" : "http://open-services.net/ns/core#resourceShape",
+      "@type" : "@id"
+    },
+    "resourceType" : {
+      "@id" : "http://open-services.net/ns/core#resourceType",
+      "@type" : "@id"
+    },
+    "usage" : {
+      "@id" : "http://open-services.net/ns/core#usage",
+      "@type" : "@id"
+    },
+    "title" : {
+      "@id" : "http://purl.org/dc/terms/title",
+      "@type" : "http://www.w3.org/1999/02/22-rdf-syntax-ns#XMLLiteral"
+    },
+    "creation" : {
+      "@id" : "http://open-services.net/ns/core#creation",
+      "@type" : "@id"
+    },
+    "hintHeight" : "http://open-services.net/ns/core#hintHeight",
+    "hintWidth" : "http://open-services.net/ns/core#hintWidth",
+    "dialog" : {
+      "@id" : "http://open-services.net/ns/core#dialog",
+      "@type" : "@id"
+    },
+    "label" : "http://open-services.net/ns/core#label",
+    "service" : {
+      "@id" : "http://open-services.net/ns/core#service",
+      "@type" : "@id"
+    },
+    "publisher" : {
+      "@id" : "http://purl.org/dc/terms/publisher",
+      "@type" : "@id"
+    },
+    "details" : {
+      "@id" : "http://open-services.net/ns/core#details",
+      "@type" : "@id"
+    },
+    "icon" : {
+      "@id" : "http://open-services.net/ns/core#icon",
+      "@type" : "@id"
+    },
+    "identifier" : "http://purl.org/dc/terms/identifier",
+    "rdf" : "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "ns1" : "http://jazz.net/xmlns/prod/jazz/process/1.0/",
+    "dc" : "http://purl.org/dc/terms/",
+    "oslc" : "http://open-services.net/ns/core#",
+    "oslc_cm" : "http://open-services.net/ns/cm#",
+    "ns3" : "http://jazz.net/xmlns/prod/jazz/calm/1.0/"
+  }
+}
