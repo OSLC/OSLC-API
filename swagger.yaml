@@ -1051,7 +1051,6 @@ paths:
         default:
           description: Unsuccessful response
 
-    # What should be returned here??
     head:
 
       tags:
@@ -1114,6 +1113,9 @@ paths:
         "200":
           description: Successful
 
+          schema:
+            $ref: "#/definitions/OAuthConfiguration"
+
           # Schema that describes response, as defined in "ref"
           #schema:
           #  type: string
@@ -1152,6 +1154,9 @@ paths:
         "200":
           description: Successful
 
+          schema:
+            $ref: "#/definitions/PrefixDefinition"
+
           # Schema that describes response, as defined in "ref"
           #schema:
           #  type: string
@@ -1189,6 +1194,8 @@ paths:
 
         "200":
           description: Successful
+          schema:
+            $ref: "#/definitions/Publisher"
 
           # Schema that describes response, as defined in "ref"
           #schema:
@@ -1228,6 +1235,9 @@ paths:
 
         "200":
           description: Successful response
+
+          schema:
+            $ref: "#/definitions/Dialog"
           
           #schema:
           #  type: string
@@ -1266,6 +1276,9 @@ paths:
 
         "200":
           description: Successful response
+
+          schema:
+            $ref: "#/definitions/Dialog"
 
           #schema:
           #  type: string
@@ -1313,6 +1326,9 @@ paths:
 
         "200":
           description: Successful creation
+
+          schema:
+            $ref: "#/definitions/CreationFactory"
 
           #schema:
           #  type: string
@@ -1410,13 +1426,8 @@ paths:
 
         "200":
           description: Successful response
-
-          # Schema for the resources that come back, as defined under "Resources"
-          #schema:
-          #  type: string
-          #  externalDocs:
-          #    description: The query results
-           #   url: http://open-services.net/ns/core#QueryCapability
+          schema:
+            $ref: "#/definitions/Resources"
 
         "400":
           description: Error in specification of query
@@ -1425,49 +1436,12 @@ paths:
           description: Unsuccessful response
 
 
-  /services/{resourceID}?{paging}:
-
-    get:
-
-      tags:
-        - OSLC-3.0
-        - OSLC-2.0
-
-      description: |
-        Obtain a specific resource by resourceID
-
-      parameters:
-        - name: resourceID
-          in: path
-          description: ID of service
-          required: true
-          type: integer
-          format: int64
-        - name: paging
-          in: path
-          description: Query to enable paging with oslc:paging=true or oslc.pageSize=<integer>
-          required: true
-          type: string
-
-      responses:
-        "200":
-          description: Successful response
-          schema:
-            $ref: "#/definitions/Resource"
-            externalDocs:
-              description: Resource returned via paging
-              url: http://open-services.net/ns/core#ResponseInfo
-        "404":
-          description: Unable to find resource
-
-        default:
-          description: Unsuccessful response
-
   /services/{serviceID}/{resourceID}?{paging}:
 
     get:
       
       tags:
+        - OSLC-3.0
         - OSLC-2.0
 
       description: |
@@ -1496,7 +1470,7 @@ paths:
         "200":
           description: Successful response
           schema:
-            $ref: '#/definitions/Resource'
+            $ref: '#/definitions/PagedResource'
         
         "404":
           description: Unable to find resource
@@ -1786,7 +1760,7 @@ paths:
           format: int64
         - name: resourceID
           in: path
-          description: LDP Container to get
+          description: Resource to get
           required: true
           type: integer
           format: int64
@@ -1911,7 +1885,6 @@ definitions:
             - $ref: "#/definitions/Query"
             - $ref: "#/definitions/CreationFactory"
             - $ref: "#/definitions/Publisher"
-            #- $ref: "#/definitions/ServiceProviderUIPreview"
             - $ref: "#/definitions/ServiceProviderInfo"
 
       "@id":
@@ -2063,8 +2036,6 @@ definitions:
       - "@type"
       - details
       - service
-      - publisher
-      - title
 
     properties:
       "@id":
@@ -2073,17 +2044,53 @@ definitions:
       "@type":
         type: string
         format: uri
+      description:
+        type: string
+        format: uri
       details:
-        type: string
-        format: uri
+        type: array
+        items:
+          type: string
+          format: uri
       service:
-        type: string
-        format: uri
+        type: array
+        items:
+          type: string
+          format: uri
       publisher:
         type: string
         format: uri
       title:
         type: string
+      oauthConfiguration:
+        $ref: "#/definitions/OAuthConfiguration"
+      prefixDefinition:
+        type: array
+        items:
+          type: string
+          format: uri
+
+  # Will need to play around with later
+  # In terms of if it should be a "graph, id, context"
+  # style. Same w/ OAuthConfiguration
+  PrefixDefinition:
+    required:
+      - "@id"
+      - "@type"
+      - prefix
+      - prefixBase
+    properties:
+      "@id":
+        type: string
+        format: uri
+      "@type":
+        type: string
+        format: uri
+      prefix:
+        type: string
+      prefixBase:
+        type: string
+        format: uri
 
   ServiceProviderContext:
 
@@ -2189,45 +2196,18 @@ definitions:
         items:
           allOf:
            - $ref: "#/definitions/Publisher"
-           - $ref: "#/definitions/ServiceProviderCatInfo"
+           - $ref: "#/definitions/ServiceProviderInfo"
            - $ref: "#/definitions/ServiceProviderCatalogInfo"
       "@id":
         type: string # Should it be a URI?
       "@context":
         $ref: "#/definitions/CatalogContext"
 
-  ServiceProviderCatInfo:
-    type: object
-    required:
-      - "@id"
-      - "@type"
-      - details
-      - identifier
-      - title
-    properties:
-      "@id":
-        type: string
-        format: uri
-      "@type":
-        type: string
-        format: uri
-      details:
-        type: string
-        format: uri
-      identifier:
-        type: string
-      title:
-        type: string
-
   ServiceProviderCatalogInfo:
     type: object
     required:
       - "@id"
       - "@type"
-      - domain
-      - serviceProvider
-      - publisher
-      - title
     properties:
       "@id":
         type: string
@@ -2236,8 +2216,10 @@ definitions:
         type: string
         format: uri
       domain:
-        type: string
-        format: uri
+        type: array
+        items:
+          type: string
+          format: uri
       serviceProvider:
         type: array
         items:
@@ -2245,7 +2227,19 @@ definitions:
           format: uri
       publisher:
         type: string
-        format: uri # Is it a URI?
+        format: uri
+      serviceProviderCatalog:
+        type: array
+        items:
+          type: string
+          format: uri
+      description:
+        type: string
+        format: uri
+      oauthConfiguration:
+        type: array
+        items:
+          $ref: "#/definitions/OAuthConfiguration"
       title:
         type: string
 
@@ -2255,10 +2249,14 @@ definitions:
       - icon
       - identifier
       - title
+      - label
       - serviceProvider
       - domain
       - publisher
       - details
+      - oauthRequestTokenURI
+      - authorizationURI
+      - oauthAccessTokenURI
       - rdf
       - dc
       - oslc
@@ -2270,6 +2268,8 @@ definitions:
         format: uri
       title:
         $ref: "#/definitions/variable"
+      label:
+        $ref: "#/definitions/variable"
       serviceProvider:
         $ref: "#/definitions/variable"
       domain:
@@ -2277,6 +2277,16 @@ definitions:
       publisher:
         $ref: "#/definitions/variable"
       details:
+        $ref: "#/definitions/variable"
+      oauthRequestTokenURI:
+        $ref: "#/definitions/variable"
+      authorizationURI:
+        $ref: "#/definitions/variable"
+      oauthAccessTokenURI:
+        $ref: "#/definitions/variable"
+      description:
+        $ref: "#/definitions/variable"
+      serviceProviderCatalog:
         $ref: "#/definitions/variable"
       rdf:
         type: string
@@ -2428,12 +2438,85 @@ definitions:
 
   # Defines a Resource as described in
   # The OSLC 2.0 specifications
+  PagedResource:
+    required:
+      - "@graph"
+      - "@id"
+      - "@context"
+    properties:
+      "@graph":
+        type: array
+        items:
+          allOf:
+            - $ref: "#/definitions/PagedResourceInfo"
+      "@id":
+        type: string
+        format: uri
+      "@context":
+        $ref: "#/definitions/PagedResourceContext"
+
+  PagedResourceInfo:
+    properties:
+      title:
+        type: string
+      description:
+        type: string
+      nextPage:
+        type: string
+        format: uri
+      totalCount:
+        type: integer
+
+  PagedResourceContext:
+    required:
+      - title
+      - description
+      - nextPage
+      - totalCount
+      - dcterms
+      - oslc
+
+    properties:
+      title:
+        $ref: "#/definitions/variable"
+      description:
+        $ref: "#/definitions/variable" 
+      nextPage:
+        $ref: "#/definitions/variable"
+      totalCount:
+        type: string
+        format: uri
+      dcterms:
+        type: string
+        format: uri
+      oslc:
+        type: string
+        format: uri
+
   Resource:
+    required:
+      - "@graph"
+      - "@id"
+      - "@context"
+
+    properties:
+      "@graph":
+        type: array
+        items:
+          allOf:
+            - $ref: "#/definitions/ResourceInfo"
+      "@id":
+        type: string
+        format: uri
+      "@context":
+        $ref: "#/definitions/ResourceContext"
+  
+  ResourceInfo:
     required:
       - "@id"
       - "@type"
-      - name
-      - URI
+      - label
+      - resource
     properties:
       "@id":
         type: string
@@ -2441,19 +2524,115 @@ definitions:
       "@type":
         type: string
         format: uri
-      name:
+      label:
         type: string
-      URI:
+      resource:
         type: string
         format: uri
-      oslc:nextPage: # URL to next page of Resource is paging is enabled
+
+  ResourceContext:
+    required:
+      - "@id"
+      - "@type"
+      - label
+      - resource
+      - oslc
+      - rdf
+    properties:
+      "@id":
         type: string
+        format: uri
+      "@type":
+        type: string
+        format: uri
+      label:
+        $ref: "#/definitions/variable"
+      resource:
+        $ref: "#/definitions/variable"
+      oslc:
+        type: string
+        format: uri
+      rdf:
+        type: string
+        format: uri
 
   # Defines an array of Resources
   Resources:
-    type: array
-    items:
-      $ref: '#/definitions/Resource'
+    required:
+      - "@graph"
+      - "@id"
+      - "@context"
+
+    properties:
+      "@graph":
+        type: array
+        items:
+          allOf:
+            - $ref: "#/definitions/Resource"
+            - $ref: "#/definitions/ResourcesInfo"
+      "@id":
+        type: string
+        format: uri
+      "@context":
+        $ref: "#/definitions/ResourcesContext"
+
+  ResourcesInfo:
+    required:
+      - "@id"
+      - "@type"
+      - results
+    properties:
+      "@id":
+        type: string
+        format: uri
+      "@type":
+        type: string
+        format: uri
+      results:
+        type: array
+        items:
+          $ref: "#/definitions/Resource"
+  
+  ResourcesContext:
+    required:
+      - "@id"
+      - "@type"
+      - results
+      - oslc
+      - rdf
+    properties:
+      "@id":
+        type: string
+        format: uri
+      "@type":
+        type: string
+        format: uri
+      results:
+        $ref: "#/definitions/variable"
+      oslc:
+        type: string
+        format: uri
+      rdf:
+        type: string
+        format: uri
+        
+  OAuthConfiguration:
+    type: object
+    required:
+      - oauthRequestTokenURI
+      - authorizationURI
+      - oauthAccessTokenURI
+    properties:
+      oauthRequestTokenURI:
+        type: string
+        format: uri
+      authorizationURI:
+        type: string
+        format: uri
+      oauthAccessTokenURI:
+        type: string
+        format: uri
+
 
   LDPContainer:
     required:
