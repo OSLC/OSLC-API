@@ -1,4 +1,8 @@
 # OSLC-API
+
+[![Discourse status](https://img.shields.io/discourse/https/meta.discourse.org/status.svg)](https://forum.open-services.net/)
+[![Gitter](https://img.shields.io/gitter/room/nwjs/nw.js.svg)](https://gitter.im/OSLC/chat)
+
 The OSLC API for Swagger.io
 
 Code is deployed on oslc-ui.mybluemix.net.
